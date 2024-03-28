@@ -3,14 +3,15 @@ import React from 'react'
 import tw from 'twrnc'
 import Carousel from 'react-native-snap-carousel'
 import { useNavigation } from '@react-navigation/native'
+import { image500 } from '../../api/MovieAPI'
 var {width,height} = Dimensions.get('window')
 export default function TrendingMovies({data}) {
   const navigation = useNavigation()
   const handleClick = (item) =>{
-    navigation.navigate('Movie',item);
+    navigation.push('Movie',item);
   }
   return (
-    <View style={tw`mb-8`}>
+    <View style={tw`mb-5`}>
       <Text style={tw`text-white text-xl mx-4 mb-5 font-semibold`}>Trending </Text>
       <Carousel
         data={data}
@@ -28,11 +29,12 @@ export default function TrendingMovies({data}) {
 }
 
 const MovieCard =({item, handleClick}) =>{
+
   return(
     <TouchableWithoutFeedback onPress={()=>handleClick(item)}>
        
           <Image
-          source = {require('/Users/khangtrinh/react_native_project/MovieApp/assets/opp.jpg')}
+          source = {{uri:image500(item.poster_path)}}
           style={tw`rounded-3xl w-[${width*0.14}] h-[${height*0.10}]`}
           ></Image>
 

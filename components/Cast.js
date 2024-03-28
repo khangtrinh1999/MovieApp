@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
+import { image185 } from '../api/MovieAPI'
 export default function Cast({cast,navigation}) {
     characterName = 'John Wick'
     actorName = 'Keanu Reeves'
@@ -14,28 +15,31 @@ export default function Cast({cast,navigation}) {
       >
         {
             cast && cast.map((person,index)=>{
-                return(
+                if (person.known_for_department == 'Acting'){
+                  return(
                     <TouchableOpacity
                         key={index}
                         style={tw`mr-4 items-center`}
-                        onPress={()=>navigation.navigate('Person',person)}
+                        onPress={()=>navigation.push('Person',person)}
                     >   
                         <View style={tw`overflow-hidden rounded-full h-20 w-20 items-center border border-neutral-500`}>
                             <Image
                                 style={tw`rounded-2xl h-24 w-20`}
-                                source = {require('/Users/khangtrinh/react_native_project/MovieApp/assets/cillian.jpg')}
+                                source = {{uri:image185(person.profile_path)}}
                             >
                                 
                             </Image>
                         </View>
                         <Text style={tw`text-white text-xs mt-1`}>
-                            {characterName.length > 10? characterName.slice(0,10)+'...':characterName}
+                            {person.character.length> 10? person.character?.slice(0,10)+'...':person.character}
                         </Text>
                         <Text style={tw`text-neutral-400 text-xs mt-1`}>
-                            {actorName.length > 10? actorName.slice(0,10)+'...':actorName}
+                            {person.name.length > 10? person.name?.slice(0,10)+'...':person.name}
                         </Text>
                     </TouchableOpacity>
                 )
+                }
+                
             })
         }
       </ScrollView>

@@ -3,6 +3,7 @@ import React from 'react'
 import tw from 'twrnc'
 
 import { useNavigation } from '@react-navigation/native'
+import { image185 } from '../../api/MovieAPI'
 var {width,height} = Dimensions.get('window')
 
 export default function MovieList({data,title,hideShowAll}) {
@@ -14,7 +15,7 @@ export default function MovieList({data,title,hideShowAll}) {
     return (
       <View style={tw`mb-5 mt-5`}>
         <View style={tw`mx-4 flex-row justify-between items-center`}>
-            <Text style={tw`text-white text-xl  mb-5 font-semibold`}>{title} </Text>
+            <Text style={tw`text-white text-xl mb-5 font-semibold`}>{title} </Text>
             {
                 !hideShowAll && (
                     <TouchableOpacity>
@@ -31,7 +32,7 @@ export default function MovieList({data,title,hideShowAll}) {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal:15}}>
             {
-                data.map((item,index)=>{
+                data?.slice(0,10).map((item,index)=>{
                     return(
                         <TouchableWithoutFeedback
                             key={index}
@@ -39,11 +40,11 @@ export default function MovieList({data,title,hideShowAll}) {
                         >   
                             <View style={tw` mr-4`}>
                                 <Image
-                                    source = {require('/Users/khangtrinh/react_native_project/MovieApp/assets/opp.jpg')}
+                                    source = {{uri:image185(item.poster_path)}}
                                     style={tw`rounded-3xl w-[${width*0.08}] h-[${height*0.06}]`}
                                 ></Image>
-                                <Text style={tw`text-neutral-300 ml-1 text-center`}>{
-                                        movieName.length > 15 ? movieName.slice(0,15) +'...' : movieName
+                                <Text style={tw`text-neutral-300 ml-1 text-center mt-2 text-base`}>{
+                                        item.title.length > 12 ? item.title.slice(0,12) +'...' : item.original_title
                                 }</Text>
                             </View>
                             
