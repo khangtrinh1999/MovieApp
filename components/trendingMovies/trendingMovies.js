@@ -14,7 +14,7 @@ export default function TrendingMovies({data}) {
   
   return (
     <View>
-      <Text style={tw`text-white text-xl mx-4 font-semibold mb-3`}>Trending </Text>
+      <Text style={tw`text-white text-xl mx-4 font-semibold mb-3`}>Trending Movies</Text>
       <Carousel
         data={data}
         renderItem={({item})=> <MovieCard item={item} ></MovieCard>}
@@ -63,9 +63,9 @@ const MovieCard =({item}) =>{
 
   return(
     <TouchableWithoutFeedback onPress={()=>setPlayTrailer(!playTrailer)}>
-            <View style={tw`overflow-hidden rounded-2xl w-full h-130`}>
+            <View style={tw`overflow-hidden rounded-2xl w-full h-130 border border-neutral-900`}>
             {
-              playTrailer
+              playTrailer && movieTrailer
               ?(
                 <View style={tw`overflow-hidden h-full w-full justify-center items-center`}>           
                   <YoutubePlayer   
@@ -97,11 +97,11 @@ const MovieCard =({item}) =>{
                 <Text style={tw`text-neutral-400 font-semibold text-center text-sm  mx-3 mt-1`}>{movieDetail?.genres?.map(genre => genre.name).join(' • ')}</Text>
                 <View style={tw`items-center justify-center mt-3`}>
                         <TouchableOpacity
-                            style={tw`flex-row  w-1/3  rounded-xl items-center justify-center`}
+                            style={tw`flex-row  w-1/3 h-8 bg-red-600 rounded-xl items-center justify-center`}
                             onPress={()=>handleClick(item)}
                         >   
-                              <Text style={tw`text-yellow-500 text-base font-semibold`}>More Detail</Text>
-                              <ChevronRightIcon size="18" color="rgb(234 179 8)" strokeWidth={2} ></ChevronRightIcon>
+                              <Text style={tw`text-white text-base font-semibold`}>More Detail</Text>
+                              <ChevronRightIcon size="18" color="white" strokeWidth={2} ></ChevronRightIcon>
                               
                         </TouchableOpacity>
                 </View>

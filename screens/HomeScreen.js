@@ -39,7 +39,7 @@ export default function HomeScreen(){
         setLoading(false)
     }
     return(
-        <View style={tw`flex-1 bg-neutral-800`}>
+        <View style={tw`flex-1 bg-black`}>
             <SafeAreaView style={tw`${ios? "-mb-2":"mb-3"}`}>
                 <StatusBar style="light"/>
                 <View style={tw`flex-row justify-between items-center mx-4`}>
@@ -47,7 +47,7 @@ export default function HomeScreen(){
                         <Bars3CenterLeftIcon size="30" color="white" strokeWidth={2}></Bars3CenterLeftIcon>
                     </TouchableOpacity>
                     
-                    <Text style={tw`text-white text-3xl font-bold`}><Text style={tw`text-yellow-500 text-3xl font-bold`}>Cine</Text>Verse</Text>
+                    <Text style={tw`text-white text-3xl font-bold`}><Text style={tw`text-red-600 text-3xl font-bold`}>Cine</Text>Verse</Text>
                     <TouchableOpacity>
                         <MagnifyingGlassIcon  size="30" color="white" strokeWidth={2}></MagnifyingGlassIcon>
                     </TouchableOpacity>
@@ -60,8 +60,8 @@ export default function HomeScreen(){
                 contentContainerStyle ={{paddingBottom:10}}
             >
                 {trending.length>0 && <TrendingMovies data= {trending}></TrendingMovies>}
-                <MovieList data={upcoming} title={'Upcoming'} hideShowAll={false}></MovieList>
-                <MovieList data={topRated} title={'Top Rated'} hideShowAll={false}></MovieList>
+                <MovieList data={upcoming} title={'Upcoming Movie'} hideShowAll={false}></MovieList>
+                <MovieList data={topRated} title={'Top Rated Movies'} hideShowAll={false}></MovieList>
             </ScrollView>)
             }
             

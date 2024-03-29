@@ -72,3 +72,8 @@ export const fetchPersonMovies= (id) =>{
 export const fetchMovieVideo= (id) =>{
     return api_call(movieVideoEndPoint(id))
 }
+
+
+
+/// TV SHOW
+

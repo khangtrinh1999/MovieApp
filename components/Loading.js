@@ -9,7 +9,7 @@ export default function Loading() {
       <Progress.CircleSnail
         thickness={12}
         size={160}
-        color={'rgb(234 179 8)'}
+        color={'#dc2626'}
       >
 
       </Progress.CircleSnail>

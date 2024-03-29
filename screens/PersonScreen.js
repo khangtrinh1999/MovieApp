@@ -36,7 +36,7 @@ export default function PersonScreen() {
 
   return (
     <ScrollView
-        style ={tw`flex-1 bg-neutral-900`}
+        style ={tw`flex-1 bg-black`}
         contentContainerStyle={{paddingBottom:20}}
     >
             <SafeAreaView style ={tw`absolute z-20 flex-row justify-between items-center w-full px-4 `}>
@@ -55,7 +55,7 @@ export default function PersonScreen() {
                                 style={tw`w-full h-[${height*0.14}]`}
                             ></Image>
                             <LinearGradient 
-                                colors ={['transparent','rgba(23,23,23,0.1)','rgba(23,23,23,1)']}
+                                colors ={['transparent','rgba(0,0,0,0.1)','rgba(0,0,0,1)']}
                                 start={{x:0.5, y:0}}
                                 end= {{x:0.5,y:1}}
                                 style={tw`w-full h-[${height*0.07}] absolute bottom-0`}

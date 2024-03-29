@@ -19,7 +19,7 @@ export default function MovieList({data,title,hideShowAll}) {
             {
                 !hideShowAll && (
                     <TouchableOpacity>
-                     <Text style={tw`text-yellow-500 text-xl  mb-5 font-semibold`}>See All</Text>
+                     <Text style={tw`text-red-600 text-xl  mb-5 font-semibold`}>See All</Text>
                 </TouchableOpacity>
                 )
             }
@@ -38,14 +38,11 @@ export default function MovieList({data,title,hideShowAll}) {
                             key={index}
                             onPress={()=>handleClick(item)}
                         >   
-                            <View style={tw` mr-2`}>
+                            <View style={tw` mr-2 border border-neutral-900 rounded-lg`}>
                                 <Image
                                     source = {{uri:image185(item.poster_path)}}
                                     style={tw`rounded-lg w-[${width*0.08}] h-[${height*0.06}]`}
-                                ></Image>
-                                <Text style={tw`text-neutral-300 ml-1 text-center mt-2 text-base`}>{
-                                        item.title.length > 12 ? item.title.slice(0,12) +'...' : item.original_title
-                                }</Text>
+                                ></Image>      
                             </View>
                             
                         </TouchableWithoutFeedback>

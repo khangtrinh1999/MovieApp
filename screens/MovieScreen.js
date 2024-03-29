@@ -2,7 +2,7 @@ import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, Image, Dimensio
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import tw from 'twrnc'
-import {  ChevronLeftIcon, SpeakerXMarkIcon, SpeakerWaveIcon } from 'react-native-heroicons/outline';
+import {  ChevronLeftIcon, VideoCameraIcon,FilmIcon } from 'react-native-heroicons/outline';
 import { LinearGradient } from 'expo-linear-gradient';
 import Cast from '../components/Cast';
 import MovieList from '../components/trendingMovies/MovieList';
@@ -21,7 +21,7 @@ export default function MovieScreen() {
     const [loading,setLoading] = useState(false)
     const [movieDetail,setMovieDetails] = useState({})
     const [movieTrailer,setMovieTrailer] = useState('')
-    const [muteTrailer,setMuteTrailer] = useState(true)
+    const [playTrailer,setPlayTrailer] = useState(false)
     useEffect(()=>{
         setLoading(true)
         getMovieDetails(item.id)
@@ -59,7 +59,7 @@ export default function MovieScreen() {
     }
     
   return (
-    <View style={tw`flex-1 bg-neutral-800`}>
+    <View style={tw`flex-1 bg-black`}>
         <SafeAreaView style ={tw`absolute z-20 flex-row justify-between items-center w-1/2 px-4 `}>
             <TouchableOpacity style={tw`rounded-xl p-1`}>
                 <ChevronLeftIcon onPress={()=> navigation.goBack()} size={30} strokeWidth={2.5} color='white'></ChevronLeftIcon>
@@ -68,41 +68,19 @@ export default function MovieScreen() {
         </SafeAreaView>
         <ScrollView
                 contentContainerStyle={{paddingBottom:20}}
-                style = {tw`flex-1 bg-neutral-900`}
+                style = {tw`flex-1 bg-black`}
             >
             <View  style = {tw`w-full`}>  
-                <SafeAreaView style ={tw`absolute z-20 flex-row-reverse justify-between items-center w-full px-4 `}>
-                    <TouchableOpacity style={tw`rounded-xl mr-2`}>
-                        {muteTrailer
-                                ?(<SpeakerXMarkIcon onPress={()=> setMuteTrailer(!muteTrailer)} size={30} strokeWidth={2.5} color='gray'></SpeakerXMarkIcon>)
-                                :(<SpeakerWaveIcon onPress={()=> setMuteTrailer(!muteTrailer)} size={30} strokeWidth={2.5} color='gray'></SpeakerWaveIcon>)
-                        }
-                    </TouchableOpacity>
-                </SafeAreaView>
+                
                 {loading?(<Loading></Loading>):(
                     <View>
                         <View>
-                            {movieTrailer ? (
-                            <View style={tw`overflow-hidden h-[${height*0.13}] w-full justify-center items-center border`}>
-                                
-                                <YoutubePlayer       
-                                    height={700}        
-                                    play={true}        
-                                    videoId={movieTrailer}        
-                                    width={'250%'}
-                                    initialPlayerParams = {{loop:1,controls:false,rel:0}}
-                                    playList={[movieTrailer]}
-                                    mute={muteTrailer}
-                                />
-                            </View>) 
-                            :
-                            (<Image
+                            <Image
                                 source = {{uri:image500(movieDetail.poster_path)}}
                                 style={tw`w-full h-[${height*0.14}]`}
-                            ></Image> )}
-
+                            ></Image>
                             <LinearGradient 
-                                colors ={['transparent','rgba(23,23,23,0.7)','rgba(23,23,23,1)']}
+                                colors ={['transparent','rgba(0,0,0,0.8)','rgba(0,0,0,1)']}
                                 start={{x:0.5, y:0}}
                                 end= {{x:0.5,y:1}}
                                 style={tw`w-full h-[${height*0.07}] absolute bottom-0`}
@@ -116,11 +94,29 @@ export default function MovieScreen() {
                                 <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>{convertDate(movieDetail.release_date)} • {movieDetail.runtime} min</Text>
                                 <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>{movieDetail?.genres?.map(genre => genre.name).join(' • ')}</Text>
                                 <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>&#9733; {movieDetail.vote_average?.toFixed(1)}</Text>
-                                
+                                <View style={tw`items-center justify-center mt-3`}>
+                                    <TouchableOpacity
+                                        style={tw`flex-row  w-25 h-13 bg-red-600 rounded-3xl items-center justify-center`}
+                                        onPress={()=>setPlayTrailer(!playTrailer)}
+                                    >   
+                                        <FilmIcon size="20" color="white" strokeWidth={2} ></FilmIcon>
+                                        <Text style={tw`text-white text-base font-semibold`}> Trailer </Text>
+                                        
+                                    </TouchableOpacity>
+                            </View>
                         </View>
                         
-                        
-                        
+                        <View style={tw`${(movieTrailer && playTrailer )? '':'hidden'} mt-3`}>
+                            <YoutubePlayer       
+                                height={250}        
+                                play={playTrailer}        
+                                videoId={movieTrailer}        
+                                width={'100%'}
+                                initialPlayerParams = {{loop:1,rel:0}}
+                                playList={[movieTrailer]}
+                            />
+                        </View>
+                    
                         <Text style={tw`text-white font-semibold text-xl mx-3 mt-3`}>Synopsis</Text>
                         <Text style={tw`text-neutral-400 font-semibold text-base mx-3 mt-1`}>
                             {movieDetail.overview}
