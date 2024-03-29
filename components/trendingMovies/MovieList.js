@@ -13,7 +13,7 @@ export default function MovieList({data,title,hideShowAll}) {
       navigation.push('Movie',item);
     }
     return (
-      <View style={tw`mb-5 mt-5`}>
+      <View style={tw`mb-3 mt-3`}>
         <View style={tw`mx-4 flex-row justify-between items-center`}>
             <Text style={tw`text-white text-xl mb-5 font-semibold`}>{title} </Text>
             {
@@ -38,10 +38,10 @@ export default function MovieList({data,title,hideShowAll}) {
                             key={index}
                             onPress={()=>handleClick(item)}
                         >   
-                            <View style={tw` mr-4`}>
+                            <View style={tw` mr-2`}>
                                 <Image
                                     source = {{uri:image185(item.poster_path)}}
-                                    style={tw`rounded-3xl w-[${width*0.08}] h-[${height*0.06}]`}
+                                    style={tw`rounded-lg w-[${width*0.08}] h-[${height*0.06}]`}
                                 ></Image>
                                 <Text style={tw`text-neutral-300 ml-1 text-center mt-2 text-base`}>{
                                         item.title.length > 12 ? item.title.slice(0,12) +'...' : item.original_title

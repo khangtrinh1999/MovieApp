@@ -5,3 +5,12 @@ export function convertDate(dateString){
     }
         return ""
     }
+
+    export function getYear(dateString){
+        if (dateString){
+            var p = dateString?.split(/\D/g)
+            return p[0]
+        }
+            return ""
+        }
+    

@@ -3,11 +3,9 @@ import React from 'react'
 import tw from 'twrnc'
 import { image185 } from '../api/MovieAPI'
 export default function Cast({cast,navigation}) {
-    characterName = 'John Wick'
-    actorName = 'Keanu Reeves'
   return (
     <View>
-      <Text style={tw`text-white font-semibold text-xl mx-3 mb-5 mt-3`}>Cast</Text>
+      <Text style={tw`text-white font-semibold text-xl mx-3 mb-3 mt-3`}>Cast</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
