@@ -82,7 +82,7 @@ export default function PersonScreen() {
                             </Text>
                         </View>
 
-                        <MovieList data={personMovies} title={'Known for'} hideShowAll={true}></MovieList>
+                        <MovieList data={personMovies} title={'Known for'} hideShowAll={true} type={'movie'}></MovieList>
                 </View>
                 )}
             

@@ -2,61 +2,61 @@ import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, Image, Dimensio
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import tw from 'twrnc'
-import {  ChevronLeftIcon,FilmIcon, ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/outline';
+import {  ChevronLeftIcon, VideoCameraIcon,FilmIcon, ChevronUpIcon, ChevronDownIcon } from 'react-native-heroicons/outline';
 import { LinearGradient } from 'expo-linear-gradient';
 import Cast from '../components/Cast';
 import MovieList from '../components/trendingMovies/MovieList';
 var {width,height} = Dimensions.get('window')
 import Loading from '../components/Loading';
-import { fetchMovieCredits, fetchMovieDetails, fetchMovieVideo, fetchSimilarMovies, image500 } from '../api/MovieAPI';
+import { fetchMovieCredits, fetchMovieVideo, fetchShowCredits, fetchShowDetails, fetchShowVideo, fetchSimilarMovies, fetchSimilarShows, image500 } from '../api/MovieAPI';
 import { convertDate, getPercentage } from '../components/Helper';
 import YoutubePlayer from "react-native-youtube-iframe";
 import * as Progress from 'react-native-progress'
-
-
-export default function MovieScreen() {
+export default function ShowScreen() {
 
     const {params:item} = useRoute();
     const navigation = useNavigation();
     const [cast, setCast] = useState()
     const [similar, setSimilar] = useState([])
     const [loading,setLoading] = useState(false)
-    const [movieDetail,setMovieDetails] = useState({})
-    const [movieTrailer,setMovieTrailer] = useState('')
+    const [showDetail,setShowDetails] = useState({})
+    const [showTrailer,setShowTrailer] = useState('')
     const [playTrailer,setPlayTrailer] = useState(false)
     useEffect(()=>{
         setLoading(true)
-        getMovieDetails(item.id)
-        getSimilarMovie(item.id)
-        getMovieCast(item.id)
-        getMovieTrailer(item.id)
+        getShowDetails(item.id)
+        getSimilarShow(item.id)
+        getShowCast(item.id)
+        getShowTrailer(item.id)
         console.log(item.id)
-        
     },[item])
 
-    const getMovieDetails = async (id) =>{
-        const data = await fetchMovieDetails(id)
-        if (data) setMovieDetails(data)
+    const getShowDetails = async (id) =>{
+        const data = await fetchShowDetails(id)
+        if (data) setShowDetails(data)
+        
         setLoading(false)
     }
 
-    const getSimilarMovie = async (id) =>{
-        const data = await fetchSimilarMovies(id);
+    
+
+    const getSimilarShow = async (id) =>{
+        const data = await fetchSimilarShows(id);
         if (data && data.results) setSimilar(data.results)
         setLoading(false)
     }
 
-    const getMovieCast = async (id) =>{
-        const data = await fetchMovieCredits(id);
+    const getShowCast = async (id) =>{
+        const data = await fetchShowCredits(id);
         if (data && data.cast) setCast(data.cast)
         setLoading(false)
     }
 
-    const getMovieTrailer = async (id) =>{
-        const data = await fetchMovieVideo(id);
+    const getShowTrailer = async (id) =>{
+        const data = await fetchShowVideo(id);
         if (data && data.results) {
             vid = data.results.find(video => (video.type == 'Trailer'));
-            setMovieTrailer(vid?.key)
+            setShowTrailer(vid?.key)
         }
         setLoading(false)
     }
@@ -79,7 +79,7 @@ export default function MovieScreen() {
                     <View>
                         <View>
                             <Image
-                                source = {{uri:image500(movieDetail.poster_path)}}
+                                source = {{uri:image500(showDetail.poster_path)}}
                                 style={tw`w-full h-[${height*0.14}]`}
                             ></Image>
                             <LinearGradient 
@@ -95,7 +95,7 @@ export default function MovieScreen() {
                         <View style={{marginTop: -(height*0.09)}}>
                                 <View style={tw`justify-center items-center mb-3`}>
                                     <Progress.Circle
-                                    progress={getPercentage(movieDetail.vote_average)}
+                                    progress={getPercentage(showDetail.vote_average)}
                                     color='rgba(220, 38, 38, 1)'
                                     unfilledColor='rgba(220, 38, 38, 0.3)'
                                     borderWidth={0}
@@ -108,10 +108,9 @@ export default function MovieScreen() {
                                     ></Progress.Circle>
 
                                 </View>
-                                <Text style={tw`text-white justify-between text-center text-3xl font-bold tracking-wider mx-3 mt-3`}>{movieDetail.title}</Text>
-                                <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>{convertDate(movieDetail.release_date)} • {movieDetail.runtime} min</Text>
-                                <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>{movieDetail?.genres?.map(genre => genre.name).join(' • ')}</Text>
-                                {/* <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>&#9733; {movieDetail.vote_average?.toFixed(1)}</Text> */}
+                                <Text style={tw`text-white justify-between text-center text-3xl font-bold tracking-wider mx-3`}>{showDetail.name}</Text>
+                                <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>{convertDate(showDetail.first_air_date)} • {showDetail.number_of_seasons} {(showDetail.number_of_seasons>1)?'seasons':'season'}</Text>
+                                <Text style={tw`text-neutral-400 font-semibold text-base text-center mx-3 mt-1`}>{showDetail?.genres?.map(genre => genre.name).join(' • ')}</Text>
                                 
                                 <View style={tw`items-center justify-center mt-2`}>
                                     <TouchableOpacity
@@ -125,27 +124,27 @@ export default function MovieScreen() {
                                 </View>
                         </View>
                         
-                        <View style={tw`${(movieTrailer && playTrailer )? '':'hidden'} mt-3`}>
+                        <View style={tw`${(showTrailer && playTrailer )? '':'hidden'} mt-3`}>
                             <YoutubePlayer       
                                 height={250}        
                                 play={playTrailer}        
-                                videoId={movieTrailer}        
+                                videoId={showTrailer}        
                                 width={'100%'}
                                 initialPlayerParams = {{loop:1,rel:0}}
-                                playList={[movieTrailer]}
+                                playList={[showTrailer]}
                             />
                         </View>
                     
                         <Text style={tw`text-white font-semibold text-xl mx-3 mt-3`}>Synopsis</Text>
                         <Text style={tw`text-neutral-400 font-semibold text-base mx-3 mt-1`}>
-                            {movieDetail.overview}
+                            {showDetail.overview}
                         </Text>
 
                         <Cast cast = {cast} navigation = {navigation}></Cast>
 
                         {/* {movieTrailer && (<Text style={tw`text-white font-semibold text-xl mx-3 mt-3`}>Trailer</Text>)} */}
                         
-                        <MovieList data={similar} title={'Similar Movies'} hideShowAll={true} type={'movie'}></MovieList>
+                        <MovieList data={similar} title={'Similar Shows'} hideShowAll={true} type={'tv'}></MovieList>
                                 </View>
                                 
                 )}

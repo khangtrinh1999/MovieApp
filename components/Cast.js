@@ -13,7 +13,7 @@ export default function Cast({cast,navigation}) {
       >
         {
             cast && cast.map((person,index)=>{
-                if (person.known_for_department == 'Acting'){
+               
                   return(
                     <TouchableOpacity
                         key={index}
@@ -36,7 +36,7 @@ export default function Cast({cast,navigation}) {
                         </Text>
                     </TouchableOpacity>
                 )
-                }
+                
                 
             })
         }

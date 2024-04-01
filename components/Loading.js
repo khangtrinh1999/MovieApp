@@ -5,11 +5,11 @@ import tw from 'twrnc'
 const {width,height} = Dimensions.get('window')
 export default function Loading() {
   return (
-    <View style = {tw`w-full h-180 flex-row justify-center items-center`}>
+    <View style = {tw`w-full h-full flex-row justify-center items-center`}>
       <Progress.CircleSnail
         thickness={12}
         size={160}
-        color={'#dc2626'}
+        color={'rgba(220, 38, 38, 1)'}
       >
 
       </Progress.CircleSnail>
