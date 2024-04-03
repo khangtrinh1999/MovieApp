@@ -6,6 +6,7 @@ import PersonScreen from '../screens/PersonScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SeeAllScreen from '../screens/SeeAllScreen';
 import ShowScreen from '../screens/ShowScreen';
+import SeasonScreen from '../screens/SeasonScreen';
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigation
@@ -19,7 +20,8 @@ export default function AppNavigation
         <Stack.Screen name="Person" options={{headerShown:false}} component={PersonScreen} />
         <Stack.Screen name="Search" options={{headerShown:false}} component={SearchScreen} />
         <Stack.Screen name="SeeAll" options={{headerShown:false}} component={SeeAllScreen} />
-        <Stack.Screen name="Show" options={{headerShown:false}} component={ShowScreen} />
+        <Stack.Screen name="Show" options={{headerShown:false}} component={ShowScreen} />  
+        <Stack.Screen name="Season" options={{headerShown:false}} component={SeasonScreen} />  
       </Stack.Navigator>
     </NavigationContainer> 
   );

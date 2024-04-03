@@ -9,7 +9,7 @@ const upcomingMoviesEndPoint = `${apiBaseURL}/movie/upcoming?api_key=${API_KEY}`
 //dyanmic endpoint
 const movieDetailEndPoint = id => `${apiBaseURL}/movie/${id}?api_key=${API_KEY}`
 const movieCreditsEndPoint = id => `${apiBaseURL}/movie/${id}/credits?api_key=${API_KEY}`
-const movieSimilarEndPoint = id => `${apiBaseURL}/movie/${id}/similar?api_key=${API_KEY}`
+const movieSimilarEndPoint = id => `${apiBaseURL}/movie/${id}/recommendations?api_key=${API_KEY}`
 const movieVideoEndPoint = id => `${apiBaseURL}/movie/${id}/videos?api_key=${API_KEY}`
 
 const personDetailsEndpoint = id => `${apiBaseURL}/person/${id}?api_key=${API_KEY}`
@@ -84,7 +84,9 @@ const topRatedShowsEndPoint = `${apiBaseURL}/tv/top_rated?api_key=${API_KEY}`
 const showVideoEndPoint = id => `${apiBaseURL}/tv/${id}/videos?api_key=${API_KEY}`
 const showDetailEndPoint = id => `${apiBaseURL}/tv/${id}?api_key=${API_KEY}`
 const showCreditsEndPoint = id => `${apiBaseURL}/tv/${id}/credits?api_key=${API_KEY}`
-const showSimilarEndPoint = id => `${apiBaseURL}/tv/${id}/similar?api_key=${API_KEY}`
+const showSimilarEndPoint = id => `${apiBaseURL}/tv/${id}/recommendations?api_key=${API_KEY}`
+const seasonDetailEndpoint = (id,season_number) => `${apiBaseURL}/tv/${id}/season/${season_number}?api_key=${API_KEY}`
+
 
 export const fetchTopRateShows = (params) =>{
     return api_call(topRatedShowsEndPoint,params)
@@ -100,4 +102,7 @@ export const fetchShowCredits = (id) =>{
 }
 export const fetchSimilarShows= (id) =>{
     return api_call(showSimilarEndPoint(id))
+}
+export const fetchSeasonDetail = (id,season_number) => {
+    return api_call(seasonDetailEndpoint(id,season_number))
 }

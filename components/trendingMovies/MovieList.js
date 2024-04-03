@@ -10,7 +10,6 @@ export default function MovieList({data,title,hideShowAll,type}) {
 
     const navigation = useNavigation()
     const handleClick = (item) =>{
-        console.log(item)
         if (type == 'movie'){
             navigation.push('Movie',item);
           }
@@ -21,8 +20,8 @@ export default function MovieList({data,title,hideShowAll,type}) {
     }
     return (
       <View style={tw`mb-3 mt-3`}>
-        <View style={tw`mx-4 flex-row justify-between items-center`}>
-            <Text style={tw`text-white text-xl mb-5 font-semibold`}>{title} </Text>
+        <View style={tw`mx-3 flex-row justify-between items-center`}>
+            <Text style={tw`text-white text-xl mb-2 font-semibold`}>{title} </Text>
             {
                 !hideShowAll && (
                     <TouchableOpacity

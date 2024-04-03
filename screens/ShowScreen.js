@@ -1,15 +1,15 @@
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, Image, Dimensions, TouchableWithoutFeedback } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import tw from 'twrnc'
-import {  ChevronLeftIcon, VideoCameraIcon,FilmIcon, ChevronUpIcon, ChevronDownIcon } from 'react-native-heroicons/outline';
+import {  ChevronLeftIcon, ChevronRightIcon,FilmIcon, ChevronUpIcon, ChevronDownIcon } from 'react-native-heroicons/outline';
 import { LinearGradient } from 'expo-linear-gradient';
 import Cast from '../components/Cast';
 import MovieList from '../components/trendingMovies/MovieList';
 var {width,height} = Dimensions.get('window')
 import Loading from '../components/Loading';
-import { fetchMovieCredits, fetchMovieVideo, fetchShowCredits, fetchShowDetails, fetchShowVideo, fetchSimilarMovies, fetchSimilarShows, image500 } from '../api/MovieAPI';
-import { convertDate, getPercentage } from '../components/Helper';
+import { fetchShowCredits, fetchShowDetails, fetchShowVideo, fetchSimilarMovies, fetchSimilarShows, image185, image500 } from '../api/MovieAPI';
+import { comparePopularity, convertDate, getPercentage, getYear } from '../components/Helper';
 import YoutubePlayer from "react-native-youtube-iframe";
 import * as Progress from 'react-native-progress'
 export default function ShowScreen() {
@@ -22,6 +22,7 @@ export default function ShowScreen() {
     const [showDetail,setShowDetails] = useState({})
     const [showTrailer,setShowTrailer] = useState('')
     const [playTrailer,setPlayTrailer] = useState(false)
+    const [seasonView,setSeasonView] = useState(true)
     useEffect(()=>{
         setLoading(true)
         getShowDetails(item.id)
@@ -34,11 +35,8 @@ export default function ShowScreen() {
     const getShowDetails = async (id) =>{
         const data = await fetchShowDetails(id)
         if (data) setShowDetails(data)
-        
         setLoading(false)
     }
-
-    
 
     const getSimilarShow = async (id) =>{
         const data = await fetchSimilarShows(id);
@@ -48,7 +46,13 @@ export default function ShowScreen() {
 
     const getShowCast = async (id) =>{
         const data = await fetchShowCredits(id);
-        if (data && data.cast) setCast(data.cast)
+        if (data && data.cast && data.crew){
+            const buff = data.cast.concat(data.crew)
+            buff.sort(comparePopularity)
+            setCast(buff.slice(0,15))
+
+        } 
+
         setLoading(false)
     }
 
@@ -119,7 +123,7 @@ export default function ShowScreen() {
                                     >   
                                         <FilmIcon size="20" color='rgba(220, 38, 38, 1)' strokeWidth={2} ></FilmIcon>
                                         <Text style={tw`text-red-700 text-xl font-semibold`}> Trailer </Text>
-                                        {playTrailer?(<ChevronUpIcon size="20" color='rgba(220, 38, 38, 1)' strokeWidth={2}></ChevronUpIcon>):(<ChevronDownIcon size="20" color="red" strokeWidth={2}></ChevronDownIcon>)}
+                                        {playTrailer?(<ChevronUpIcon size="20" color='red' strokeWidth={2}></ChevronUpIcon>):(<ChevronDownIcon size="20" color="red" strokeWidth={2}></ChevronDownIcon>)}
                                     </TouchableOpacity>
                                 </View>
                         </View>
@@ -142,7 +146,50 @@ export default function ShowScreen() {
 
                         <Cast cast = {cast} navigation = {navigation}></Cast>
 
-                        {/* {movieTrailer && (<Text style={tw`text-white font-semibold text-xl mx-3 mt-3`}>Trailer</Text>)} */}
+
+                       
+                        <TouchableOpacity
+                            style={tw`flex-row bg-black rounded-3xl items-center mt-2`}
+                            onPress={()=>setSeasonView(!seasonView)}
+                        >   
+                            <Text style={tw`text-white font-semibold text-xl mx-3`}>Seasons ({showDetail?.number_of_seasons})</Text>
+                            {seasonView?(<ChevronUpIcon size="20" color='white' strokeWidth={2}></ChevronUpIcon>):(<ChevronDownIcon size="20" color="white" strokeWidth={2}></ChevronDownIcon>)}
+                        </TouchableOpacity>
+                        
+                        {(seasonView) && (
+                            <View style={tw` w-full gap-2 mx-3 mt-3 `}>
+                            {showDetail.seasons?.map((season,index)=>{
+                                return (
+                                    <TouchableWithoutFeedback key={index} onPress={()=>navigation.push('Season',{showDetail : showDetail, season:season})}>
+                                        <View  style={tw`flex-row justify-between items-center rounded-xl overflow-hidden w-100 bg-neutral-950 border border-neutral-800`}>
+                                            <View style={tw`flex-row`}>
+                                                <Image
+                                                    source = {{uri:image185(season?.poster_path)}}
+                                                    style={tw` w-[${width*0.06}] h-[${height*0.04}]`}
+                                                ></Image>
+                                                <View style={tw`mt-1`}>
+                                                    <Text style={tw`text-white font-semibold text-xl mx-3`}>{season?.name}</Text>
+                                                    <Text style={tw`text-neutral-400 text-base mx-3 `}>{getYear(season?.air_date) } • {season?.episode_count} Episodes</Text>
+                                                    <Text style={tw`text-red-700 text-xl mx-3 font-bold ${(season?.vote_average==0)?'hidden':''}`}>&#9733; {season?.vote_average?.toPrecision(2)}</Text>
+                                                    
+                                                </View>
+                                            </View>
+                                            <View style={tw`flex-col-reverse py-3 h-full`}>
+                                                <View style={tw`flex-row items-center justify-center`}>
+                                                        <Text style={tw`text-neutral-400 text-sm font-semibold`}>More Details</Text>
+                                                        <ChevronRightIcon size="18" color="#737373" strokeWidth={2} ></ChevronRightIcon>
+                                                </View>
+                                                
+                                            </View>
+                                            
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                    
+                                )
+                            })}
+                        </View>
+                        )}
+                        
                         
                         <MovieList data={similar} title={'Similar Shows'} hideShowAll={true} type={'tv'}></MovieList>
                                 </View>

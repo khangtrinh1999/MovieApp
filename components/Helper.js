@@ -35,3 +35,14 @@ export function  getEmptyRatingColor (number){
     else return 'rgba(0,250,0,0.3)'
         
 }
+
+
+export function comparePopularity( a, b ) {
+    if ( a.popularity < b.popularity ){
+      return 1;
+    }
+    if ( a.popularity > b.popularity ){
+      return -1;
+    }
+    return 0;
+  }

@@ -186,7 +186,7 @@ const ShowCard =({item}) =>{
                             style={tw`flex-row  w-1/3 h-8 bg-red-700 rounded-xl items-center justify-center`}
                             onPress={()=>handleClick(item)}
                         >   
-                              <Text style={tw`text-white text-base font-semibold`}>More Detail</Text>
+                              <Text style={tw`text-white text-base font-semibold`}>More Details</Text>
                               <ChevronRightIcon size="18" color="white" strokeWidth={2} ></ChevronRightIcon>
                               
                         </TouchableOpacity>

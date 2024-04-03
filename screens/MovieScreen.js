@@ -9,7 +9,7 @@ import MovieList from '../components/trendingMovies/MovieList';
 var {width,height} = Dimensions.get('window')
 import Loading from '../components/Loading';
 import { fetchMovieCredits, fetchMovieDetails, fetchMovieVideo, fetchSimilarMovies, image500 } from '../api/MovieAPI';
-import { convertDate, getPercentage } from '../components/Helper';
+import { comparePopularity, convertDate, getPercentage } from '../components/Helper';
 import YoutubePlayer from "react-native-youtube-iframe";
 import * as Progress from 'react-native-progress'
 
@@ -48,7 +48,12 @@ export default function MovieScreen() {
 
     const getMovieCast = async (id) =>{
         const data = await fetchMovieCredits(id);
-        if (data && data.cast) setCast(data.cast)
+        if (data && data.cast && data.crew){
+            const buff = data.cast.concat(data.crew)
+            buff.sort(comparePopularity)
+            setCast(buff.slice(0,15))
+
+        } 
         setLoading(false)
     }
 
